@@ -1,5 +1,16 @@
-gcloud config set zone europe-west2
-gcloud config set zone europe-west2-b
+
+
+gcloud config set compute/zone europe-west2
+gcloud config set compute/zone europe-west2-b
+
+wget -q --show-progress --https-only --timestamping \
+  https://storage.googleapis.com/kubernetes-the-hard-way/cfssl/linux/cfssl \
+  https://storage.googleapis.com/kubernetes-the-hard-way/cfssl/linux/cfssljson
+chmod +x cfssl cfssljson
+sudo mv cfssl cfssljson /usr/local/bin/
+
+
+
 ./1-createvpc.sh
 ./2-reserve-staticip.sh
 ./3-CreateCtrlPlaneInstances.sh
