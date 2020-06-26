@@ -1,3 +1,5 @@
+gcloud config set zone europe-west2
+gcloud config set zone europe-west2-b
 ./1-createvpc.sh
 ./2-reserve-staticip.sh
 ./3-CreateCtrlPlaneInstances.sh
