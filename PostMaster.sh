@@ -3,4 +3,5 @@
 ./verifyEXTLB.sh
 ./ProvisionPodNWRoutes.sh
 ./DeployDNSCluster.sh
+./SmokeTest.sh
 
