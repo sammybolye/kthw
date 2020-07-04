@@ -1,0 +1,5 @@
+./PreMaster.sh
+gcloud compute ssh worker-0 --command "~/ConfigWorkers.sh"
+gcloud compute ssh worker-1 --command "~/ConfigWorkers.sh"
+gcloud compute ssh worker-2 --command "~/ConfigWorkers.sh"
+./PostMaster.sh
