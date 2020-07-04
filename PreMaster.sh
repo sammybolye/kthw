@@ -1,6 +1,6 @@
 
 
-gcloud config set compute/zone europe-west2
+gcloud config set compute/region europe-west2
 gcloud config set compute/zone europe-west2-b
 
 wget -q --show-progress --https-only --timestamping \
