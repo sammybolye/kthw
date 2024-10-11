@@ -1,0 +1,239 @@
+apiVersion: v1
+items:
+- apiVersion: v1
+  data:
+    ca.crt: |
+      -----BEGIN CERTIFICATE-----
+      MIIELTCCApWgAwIBAgIRAKuvnSgW8tylI48BcCbnXAQwDQYJKoZIhvcNAQELBQAw
+      LzEtMCsGA1UEAxMkYWJhMDNhZjEtZTQ4My00MmFiLThjODMtMjMyMjgyYjY4MjVj
+      MCAXDTI0MTAxMTA2MzY0MVoYDzIwNTQxMDA0MDczNjQxWjAvMS0wKwYDVQQDEyRh
+      YmEwM2FmMS1lNDgzLTQyYWItOGM4My0yMzIyODJiNjgyNWMwggGiMA0GCSqGSIb3
+      DQEBAQUAA4IBjwAwggGKAoIBgQDAamEeM19DxQqwtlWpZeVN733w2j9Q+CPiP/7k
+      tj0qc9b4D3gxpZSYftHnJjYbZmD830cWOkCmrd1617QRSvtV/q72ca10Y4FkPrGt
+      Em9hwwRpW7mDS4dMR765Nj652zUOqmlb0QZK+Ey8LvFoujTsiavMqZfQYDRjw76h
+      cl3eKUQNW/10mLzCWpZaNk58Y63uxwogZyYPRwl1/45qFsOghiRhSs1CbldM4XfF
+      /mfZtBvBtDXSsyAIlokRyoCX4ejlOHSDZt0ltAw0pvaAL4gDJzdKEUiHMfsVl4+s
+      rA96FVvxf9rl4GprP3yDHA+AG0ym9pS6DIixOlDZVQQef76emNFxFjYG3RRdIgQK
+      x3piS7y1kBH6NdaU/dYEocL44XvX4YHke8VqGoELgkbOJj/h6mcVGB52NirmwV5F
+      PctqvsDmJrpzrqn1QAK6tJa4tsjurRbHOMZNqOV9rfcMI2GJd6Z77zuloBnS/hxI
+      JHdy/lUtg613ZRVt24GkjQg2SFkCAwEAAaNCMEAwDgYDVR0PAQH/BAQDAgIEMA8G
+      A1UdEwEB/wQFMAMBAf8wHQYDVR0OBBYEFLr9DhjM1WQS6NN0Td323L6lMSswMA0G
+      CSqGSIb3DQEBCwUAA4IBgQBydnRUIItFtNJYLWJZwbNnMZJTpaRpM70qhtdenQqH
+      JRvzAeVzIKBonWehLr+pJuNjG0fe7QhZHHn9hIb1o+mCiaRzasrqGTNgSS12rfQg
+      NnFTBY7z7fY0ljZBK4GcRkNzU56MydIboSawt1LGCSyELmN67h+K6FvQBRDMtR0L
+      mSlL148G5jH82eJ0kHHiD8qdFGyen3S0lgZ3lXRA3tNnve2Gh4wivFm14iZpaUi3
+      E9RVxojno6eyXI1yW2ipj7o+wgA+fnXODonJQYr5KK0olDjMMHsiuvgJGzxzShp7
+      NN9q+6siAfrn2oDxiBd+No8+SqL9OjQRZFE4lU0SH+6s+fGF/Nxv9wUhfwV/AGqr
+      E0SAgoCRGrIiFzov68adCcq6DG8vNUsXjUEeY2zgTcFmVyZlPMbudZdGFFVqtUyw
+      sYYdDWT1E9dyh4urxhlPeuijKMP9IPiORyibZWybueuiNQ3/ueHEVaVKp/ocss6X
+      DvXsC1LVCMtYaAKcDG2ONGM=
+      -----END CERTIFICATE-----
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubernetes.io/description: Contains a CA bundle that can be used to verify the
+        kube-apiserver when using internal endpoints such as the internal service
+        IP or kubernetes.default.svc. No other usage is guaranteed across distributions
+        of Kubernetes clusters.
+    creationTimestamp: "2024-10-11T08:02:49Z"
+    name: kube-root-ca.crt
+    namespace: sam
+    resourceVersion: "15551"
+    uid: c5a82f86-12a8-4268-bd1a-3247f0e7ffff
+- apiVersion: v1
+  data:
+    rserver.conf: |
+      www-root-path=/sam
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","data":{"rserver.conf":"www-root-path=/sam\nsession-cookie-path=/sam\n"},"kind":"ConfigMap","metadata":{"annotations":{},"name":"rserver-config","namespace":"sam"}}
+    creationTimestamp: "2024-10-11T08:02:56Z"
+    name: rserver-config
+    namespace: sam
+    resourceVersion: "32916"
+    uid: 56f21f9a-10b6-4afc-b3d5-2f086ed19c5d
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Pod","metadata":{"annotations":{},"labels":{"app":"rserver"},"name":"rserver","namespace":"sam"},"spec":{"containers":[{"env":[{"name":"PASSWORD","value":"rstudio"}],"image":"rocker/rstudio:latest","imagePullPolicy":"Always","name":"rserver","ports":[{"containerPort":8787,"protocol":"TCP"}],"volumeMounts":[{"mountPath":"/etc/rstudio","name":"rserver-config"}]}],"volumes":[{"configMap":{"name":"rserver-config"},"name":"rserver-config"}]}}
+    creationTimestamp: "2024-10-11T08:45:56Z"
+    labels:
+      app: rserver
+    name: rserver
+    namespace: sam
+    resourceVersion: "44696"
+    uid: 3e088ff8-e961-47ed-afde-2dbd4edfdf92
+  spec:
+    containers:
+    - env:
+      - name: PASSWORD
+        value: rstudio
+      image: rocker/rstudio:latest
+      imagePullPolicy: Always
+      name: rserver
+      ports:
+      - containerPort: 8787
+        protocol: TCP
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /etc/rstudio
+        name: rserver-config
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-tsdf5
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    nodeName: gke-spark-default-pool-5ff80c17-9m06
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: default
+    serviceAccountName: default
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - configMap:
+        defaultMode: 420
+        name: rserver-config
+      name: rserver-config
+    - name: kube-api-access-tsdf5
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2024-10-11T08:45:57Z"
+      status: "True"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2024-10-11T08:45:56Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2024-10-11T08:45:57Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2024-10-11T08:45:57Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2024-10-11T08:45:56Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: containerd://09541bb448dd7231d71912f4e40559b98471d863fe31df07dbebdfc4d8ca923a
+      image: docker.io/rocker/rstudio:latest
+      imageID: docker.io/rocker/rstudio@sha256:e20873e75a9dfe7808a9087c683f7f3f26c31bddb1f31a24ba2f674942df2750
+      lastState: {}
+      name: rserver
+      ready: true
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2024-10-11T08:45:56Z"
+    hostIP: 10.128.0.3
+    hostIPs:
+    - ip: 10.128.0.3
+    phase: Running
+    podIP: 10.120.0.11
+    podIPs:
+    - ip: 10.120.0.11
+    qosClass: BestEffort
+    startTime: "2024-10-11T08:45:56Z"
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      cloud.google.com/neg: '{"ingress":true}'
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"name":"rserver","namespace":"sam"},"spec":{"ports":[{"port":80,"protocol":"TCP","targetPort":8787}],"selector":{"app":"rserver"},"type":"ClusterIP"}}
+    creationTimestamp: "2024-10-11T08:03:07Z"
+    name: rserver
+    namespace: sam
+    resourceVersion: "15761"
+    uid: efb938cc-ff88-4936-8279-43bb1d1902e3
+  spec:
+    clusterIP: 34.118.228.43
+    clusterIPs:
+    - 34.118.228.43
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 8787
+    selector:
+      app: rserver
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"networking.k8s.io/v1","kind":"Ingress","metadata":{"annotations":{"nginx.ingress.kubernetes.io/rewrite-target":"/$2","nginx.ingress.kubernetes.io/use-regex":"true"},"name":"rstudio-sam-ingress","namespace":"sam"},"spec":{"ingressClassName":"nginx","rules":[{"host":"rstudio.bank.com","http":{"paths":[{"backend":{"service":{"name":"rserver","port":{"number":80}}},"path":"/sam(/|$)(.*)","pathType":"ImplementationSpecific"}]}}]}}
+      nginx.ingress.kubernetes.io/rewrite-target: /$2
+      nginx.ingress.kubernetes.io/use-regex: "true"
+    creationTimestamp: "2024-10-11T08:21:35Z"
+    generation: 1
+    name: rstudio-sam-ingress
+    namespace: sam
+    resourceVersion: "28588"
+    uid: a68f6b04-d556-48ae-87ac-92279e05425c
+  spec:
+    ingressClassName: nginx
+    rules:
+    - host: rstudio.bank.com
+      http:
+        paths:
+        - backend:
+            service:
+              name: rserver
+              port:
+                number: 80
+          path: /sam(/|$)(.*)
+          pathType: ImplementationSpecific
+  status:
+    loadBalancer:
+      ingress:
+      - ip: 34.70.91.233
+kind: List
+metadata:
+  resourceVersion: ""
